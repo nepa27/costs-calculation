@@ -3,6 +3,7 @@ from email import message_from_string
 
 
 def get_messages():
+    messages = []
     mail = IMAP4_SSL('imap.yandex.ru')
     mail.login('aleksandrnahimov@yandex.ru', 'fazTor-wymre0-wuqtyd')
 
@@ -15,7 +16,6 @@ def get_messages():
     id_list = ids.split()
     id_list.reverse()
     latest_email = id_list[:5]
-    print(latest_email)
     for latest_email_id in latest_email:
         result, data = mail.fetch(latest_email_id, "(RFC822)")
         raw_email = data[0][1]
@@ -26,11 +26,12 @@ def get_messages():
         if email_message.is_multipart():
             for payload in email_message.get_payload():
                 body = payload.get_payload(decode=True).decode('utf-8')
-                print(body)
+                messages.append(body)
         else:
             body = email_message.get_payload(decode=True).decode('utf-8')
-            print(body)
+            messages.append(body)
+
+    return messages
 
 
-if __name__ == '__main__':
-    get_messages()
+data = get_messages()
