@@ -15,7 +15,7 @@ def get_messages():
     ids = data[0]
     id_list = ids.split()
     id_list.reverse()
-    latest_email = id_list[:5]
+    latest_email = id_list[:1]
     for latest_email_id in latest_email:
         result, data = mail.fetch(latest_email_id, "(RFC822)")
         raw_email = data[0][1]
