@@ -5,7 +5,11 @@ from email import message_from_string
 def get_messages():
     messages = []
     mail = IMAP4_SSL('imap.yandex.ru')
-    mail.login('aleksandrnahimov@yandex.ru', 'fazTor-wymre0-wuqtyd')
+    with open('pass.txt', 'r') as str:
+        _ = str.readlines()
+        login = _[0].split('login:')
+        passw = _[1].split('pass:')
+    mail.login(f'{login[1][:-1]}', f'{passw[1]}')
 
     mail.list()
     mail.select("inbox")

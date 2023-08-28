@@ -1,5 +1,6 @@
 from openpyxl import load_workbook
 from get_messages import data
+from time import ctime
 
 
 def get_date(data):
@@ -11,7 +12,7 @@ def get_date(data):
     return values
 
 
-def open_book():
+def get_last_value():
     last_value = []
     name_book = 'coasts.xlsx'
     book = load_workbook(name_book)
@@ -30,12 +31,29 @@ def write_data(values, last_value):
         send_value = [int(value[0]), value[1]]
         if last_value != send_value:
             sheet.append(send_value)
+            with open('log.txt', 'a') as file:
+                file.write(str(send_value[0]))
+                file.write(' ')
+                file.write(ctime())
+                file.write('\n')
         else:
-            print('Error')
+            with open('log.txt', 'a') as file:
+                file.write(f'Data is already in file! - {send_value[0]}')
     book.save(name_book)
     book.close()
 
 
+def delete_data():
+    today_date = ctime().split()
+    day = today_date[0]
+    time = today_date[4].split(':')
+    if day == 'Sun' and int(time[0]) > 20:
+        name_book = 'coasts.xlsx'
+        book = load_workbook(name_book)
+        sheet = book['data']
+        sheet.delete_rows(3, 50)
+        book.save(name_book)
+        book.close()
+
 values = get_date(data)
-last_values = open_book()
-write_data(values, last_values)
+last_values = get_last_value()
