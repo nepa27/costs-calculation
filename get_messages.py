@@ -19,7 +19,7 @@ def get_messages():
     ids = data[0]
     id_list = ids.split()
     id_list.reverse()
-    latest_email = id_list[:1]
+    latest_email = id_list[:10]
     for latest_email_id in latest_email:
         result, data = mail.fetch(latest_email_id, "(RFC822)")
         raw_email = data[0][1]
@@ -27,14 +27,16 @@ def get_messages():
 
         email_message = message_from_string(raw_email_string)
 
-        if email_message.is_multipart():
-            for payload in email_message.get_payload():
-                body = payload.get_payload(decode=True).decode('utf-8')
+        try:
+            if email_message.is_multipart():
+                for payload in email_message.get_payload():
+                    body = payload.get_payload(decode=True).decode('utf-8')
+                    messages.append(body)
+            else:
+                body = email_message.get_payload(decode=True).decode('utf-8')
                 messages.append(body)
-        else:
-            body = email_message.get_payload(decode=True).decode('utf-8')
-            messages.append(body)
-
+        except:
+            pass
     return messages
 
 
