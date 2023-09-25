@@ -29,8 +29,6 @@ def get_last_value():
 
 
 def write_data(values, last_value):
-    print(values)
-    print(last_value)
     name_book = 'coasts.xlsx'
     book = load_workbook(name_book)
     sheet = book['data']
@@ -55,9 +53,9 @@ def delete_data():
     time = today_date[4].split(':')
     if day == 'Sun' and int(time[0]) > 22:
         name_book = 'coasts.xlsx'
-        book = load_workbook(name_book)
+        book = load_workbook(name_book, data_only=True)
         worksheet = book.active
-        summ = worksheet['C2'].get_value
+        summ = worksheet['C2'].value
         with open('log.txt', 'a') as file:
             file.write(str(f'Summ for a week: {str(summ)}'))
             file.write(' ')
