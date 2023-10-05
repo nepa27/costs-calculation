@@ -3,7 +3,7 @@ from get_messages import data
 from time import ctime
 
 
-def get_date(data):
+def get_date(data:list) -> list:
     values = []
     for string in data:
         if string.startswith('@'):
@@ -12,7 +12,7 @@ def get_date(data):
     return values
 
 
-def get_last_value():
+def get_last_value() -> list:
     name = []
     value = []
     name_book = 'coasts.xlsx'
@@ -28,7 +28,7 @@ def get_last_value():
     return last_value
 
 
-def write_data(values, last_value):
+def write_data(values:list, last_value:list):
     name_book = 'coasts.xlsx'
     book = load_workbook(name_book)
     sheet = book['data']
@@ -47,24 +47,30 @@ def write_data(values, last_value):
     book.close()
 
 
-def delete_data():
+def summ_value_a_week(values_and_numbers:list) -> int:
+    summ_coasts = 0
+    for value_and_number in values_and_numbers:
+        summ_coasts += value_and_number[0]
+    return summ_coasts
+
+
+def delete_data(last_value):
     today_date = ctime().split()
     day = today_date[0]
-    time = today_date[4].split(':')
+    time = today_date[3].split(':')
     if day == 'Sun' and int(time[0]) > 22:
+        result_summ = summ_value_a_week(last_value)
         name_book = 'coasts.xlsx'
-        book = load_workbook(name_book, data_only=True)
-        worksheet = book.active
-        summ = worksheet['C2'].value
-        with open('log.txt', 'a') as file:
-            file.write(str(f'Summ for a week: {str(summ)}'))
-            file.write(' ')
-            file.write(ctime())
-            file.write('\n')
+        book = load_workbook(name_book)
         sheet = book['data']
         sheet.delete_rows(3, 50)
         book.save(name_book)
         book.close()
+        with open('log.txt', 'a') as file:
+            file.write(str(f'Summ for a week: {result_summ}'))
+            file.write(' ')
+            file.write(ctime())
+            file.write('\n')
 
 
 values = get_date(data)
