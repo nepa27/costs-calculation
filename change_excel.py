@@ -2,8 +2,10 @@ from openpyxl import load_workbook
 from get_messages import data
 from time import ctime
 
+NAME_BOOK = 'costs.xlsx'
 
-def get_date(data:list) -> list:
+
+def get_date(data: list) -> list:
     values = []
     for string in data:
         if string.startswith('@'):
@@ -15,11 +17,10 @@ def get_date(data:list) -> list:
 def get_last_value() -> list:
     name = []
     value = []
-    name_book = 'coasts.xlsx'
-    book = load_workbook(name_book)
+    book = load_workbook(NAME_BOOK)
     sheet = book.active
     for col in range(1, 3):
-        for row in range(3, sheet.max_row+1):
+        for row in range(3, sheet.max_row + 1):
             if col == 1:
                 name.append(sheet.cell(row, col).value)
             if col == 2:
@@ -28,9 +29,8 @@ def get_last_value() -> list:
     return last_value
 
 
-def write_data(values:list, last_value:list):
-    name_book = 'coasts.xlsx'
-    book = load_workbook(name_book)
+def write_data(values: list, last_value: list):
+    book = load_workbook(NAME_BOOK)
     sheet = book['data']
     for value in values:
         if value in last_value:
@@ -47,7 +47,7 @@ def write_data(values:list, last_value:list):
     book.close()
 
 
-def summ_value_a_week(values_and_numbers:list) -> int:
+def summ_value_a_week(values_and_numbers: list) -> int:
     summ_coasts = 0
     for value_and_number in values_and_numbers:
         summ_coasts += value_and_number[0]
@@ -60,11 +60,10 @@ def delete_data(last_value):
     time = today_date[3].split(':')
     if day == 'Sun' and int(time[0]) > 22:
         result_summ = summ_value_a_week(last_value)
-        name_book = 'coasts.xlsx'
-        book = load_workbook(name_book)
+        book = load_workbook(NAME_BOOK)
         sheet = book['data']
         sheet.delete_rows(3, 50)
-        book.save(name_book)
+        book.save(NAME_BOOK)
         book.close()
         with open('log.txt', 'a') as file:
             file.write(str(f'Summ for a week: {result_summ}'))
