@@ -43,7 +43,7 @@ def write_data(values: list, last_value: list):
                 file.write(ctime())
                 file.write('\n')
 
-    book.save(name_book)
+    book.save(NAME_BOOK)
     book.close()
 
 
