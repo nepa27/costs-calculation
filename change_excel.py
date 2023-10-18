@@ -1,5 +1,6 @@
 from openpyxl import load_workbook
 from get_messages import data
+from datetime import datetime as dt
 from time import ctime
 
 NAME_BOOK = 'costs.xlsx'
@@ -33,14 +34,18 @@ def write_data(values: list, last_value: list):
     book = load_workbook(NAME_BOOK)
     sheet = book['data']
     for value in values:
+        number_value = str(value[0])
+        name_value = value[1]
+        time = dt.today().strftime("Date: %d.%m.%Y | Time: %H:%M:%S |")
         if value in last_value:
             pass
         else:
             sheet.append(value)
             with open('log.txt', 'a') as file:
-                file.write(str(value[0]))
+                file.write(f'| {number_value} р.'.ljust(11))
+                file.write(f'expended for "{name_value}" |')
                 file.write(' ')
-                file.write(ctime())
+                file.write(str(time).rjust(22))
                 file.write('\n')
 
     book.save(NAME_BOOK)
@@ -54,7 +59,7 @@ def summ_value_a_week(values_and_numbers: list) -> int:
     return summ_coasts
 
 
-def delete_data(last_value):
+def delete_data(last_value: list):
     today_date = ctime().split()
     day = today_date[0]
     time = today_date[3].split(':')
