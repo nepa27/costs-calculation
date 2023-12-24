@@ -1,10 +1,11 @@
-from imaplib import IMAP4_SSL
 from email import message_from_string
+from imaplib import IMAP4_SSL
 
 
-def get_messages():
+def get_messages_from_email():
+    """ Get messages from email. """
     messages = []
-    mail = IMAP4_SSL('imap.yandex.ru')
+    mail = IMAP4_SSL('imap.yandex.ru')  # write your email
     with open('pass.txt', 'r') as str:
         _ = str.readlines()
         login = _[0].split('login:')
@@ -26,18 +27,15 @@ def get_messages():
         raw_email_string = raw_email.decode('utf-8')
 
         email_message = message_from_string(raw_email_string)
-
         try:
             if email_message.is_multipart():
                 for payload in email_message.get_payload():
                     body = payload.get_payload(decode=True).decode('utf-8')
                     messages.append(body)
-            else:
-                body = email_message.get_payload(decode=True).decode('utf-8')
-                messages.append(body)
-        except:
-            pass
+            body = email_message.get_payload(decode=True).decode('utf-8')
+            messages.append(body)
+        except AttributeError:
+            with open('log.txt', 'a') as error:
+                error.write('Didn`t decode message\n')
+
     return messages
-
-
-data = get_messages()
