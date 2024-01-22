@@ -1,5 +1,6 @@
 from datetime import datetime as dt
 from time import ctime
+
 from openpyxl import load_workbook
 
 
@@ -40,13 +41,11 @@ def write_data(new_values: list, last_values: list) -> None:
         cost_value = str(value[0])
         name_cost_value = value[1]
         time = dt.today().strftime("Date: %d.%m.%Y | Time: %H:%M:%S |")
-        if value not in last_values:
+        if value not in last_values and value != ('', ''):
             sheet.append(value)
             with open('log.txt', 'a') as file:
                 file.write(f'| {cost_value} р.'.ljust(11))
-                file.write(f'expended for "{name_cost_value}" | ')
-                file.write(f'{str(time)}'.rjust(22))
-                file.write('\n')
+                file.write(f'expended for "{name_cost_value}" | {str(time)}\n')
 
     book.save(NAME_BOOK)
     book.close()
@@ -65,7 +64,6 @@ def delete_data(get_value: list) -> None:
     book = load_workbook(NAME_BOOK)
     sheet = book['data']
     number_rows = [int(value[1:], 16) + 1 for value in get_value]
-    print(number_rows)
     [sheet.delete_rows(number) for number in number_rows]
     book.save(NAME_BOOK)
     book.close()

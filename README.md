@@ -6,7 +6,9 @@ At the end of the week, the "costs.xlsx" file is cleared, and the amount spent f
 
 ### Prerequisites
 
-You have to Python and an Excel file application. I use LibreOffice because I work on Ubuntu
+You have to Python and an Excel file application. I use LibreOffice because I work on Ubuntu. 
+You must use Excel file from this repository. It is example which work with programm. 
+
 
 ### Installing
 
@@ -31,9 +33,23 @@ You have to create "pass.txt" and write there your login and password
 login:my_login
 pass:my_pass
 ```
-Also you have to create costs.sh
+Also you may create costs.sh
 ```
 #!/bin/bash
 cd /home/ubuntu/PycharmProjects/my_costs
 python3.11 main.py
 ```
+## GUI_version
+<p align="center">
+<img  src="img_readme/1.png"/>
+</p>
+<p align="center">
+<img  src="img_readme/2.png"/>
+</p>
+<p align="center">
+<img  src="img_readme/3.png"/>
+</p>
+<p align="center">
+<img  src="img_readme/4.png"/>
+</p>
+

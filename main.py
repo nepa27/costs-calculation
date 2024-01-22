@@ -1,10 +1,11 @@
-from change_excel import delete_data_in_the_weekend, get_data_from_email, get_last_costs, write_data
-from get_messages import get_messages_from_email
+import change_excel
+import get_messages
 
 
 if __name__ == "__main__":
-    new_values = get_data_from_email(get_messages_from_email())
-    last_values = get_last_costs()
+    change_excel.write_data(
+        change_excel.get_data_from_email(
+            get_messages.get_messages_from_email()),
+        change_excel.get_last_costs())
 
-    write_data(new_values, last_values)
-    delete_data_in_the_weekend(last_values)
+    change_excel.delete_data_in_the_weekend(change_excel.get_last_costs())
